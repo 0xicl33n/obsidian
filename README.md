@@ -22,7 +22,7 @@ Config options:
 
 
 ## How to use 
-1) Download the latest release
+1) Download the [latest release](https://github.com/0xicl33n/obsidian/releases)
 2) Edit `config.toml`
 3) Run
 
