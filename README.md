@@ -1,0 +1,1 @@
+![Obsidian](/assets/logo.png "Obsidian")
