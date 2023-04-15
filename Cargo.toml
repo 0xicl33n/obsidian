@@ -9,3 +9,11 @@ edition = "2021"
 tui = "0.19"
 crossterm = "0.25"
 fstrings = "0.2.3"
+toml = "0.5.2"
+serde = { version = "1.0.136", features = ["derive"] }
+serde_json = {version = "1.0"}
+directories = "5.0.0"
+
+
+[target.'cfg(windows)'.build-dependencies]
+winres = "0.1"
