@@ -26,7 +26,4 @@ Config options:
 3) Run
 
 ## How to contribute
-- Git clone and make a pull request :)
-
-
-Made with ❤️ in California
+- Git clone and make a pull request
