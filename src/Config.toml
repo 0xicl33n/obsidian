@@ -1,3 +1,4 @@
 vanilla = "%appdata%\\.minecraft"
-curse = "I:\\cursecraft\\Instances"
+curse = "I:\\CURSEFORGE_MINECRAFT\\Instances"
 mmc = "H:\\miencraft_admin_stuff\\MultiMC\\instances"
+rinth = "I:\\MODRINTH\\profiles"
