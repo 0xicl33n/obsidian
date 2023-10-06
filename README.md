@@ -6,12 +6,11 @@
 Obisdian is a [command line application](https://en.wikipedia.org/wiki/Command-line_interface) for managing `options.txt` files for Minecraft installations. 
 ___
 
-Obsidian is written in pure rust🦀. Right now it is only for Windows, but i will make the effort to port to *nix and mac at a later date.
-
 Supports:
 - 🍦 Vanilla ✅
+- 🧩 Modrinth ✅
 - 🛠️ Curseforge ✅
-- ⛏️ MultiMC ✅
+- ⛏️ MultiMC/PRISM ✅
 
 Config options:
 
@@ -27,7 +26,4 @@ Config options:
 3) Run
 
 ## How to contribute
-- Git clone and make a pull request :)
-
-
-Made with ❤️ in California
+- Git clone and make a pull request
