@@ -1,16 +1,11 @@
-#[macro_use]
-use fstrings::f;
-use directories;
-use directories::ProjectDirs;
-use whoami;
+//use whoami;
 use std::env::consts;
 use std::fs;
-use std::process::exit;
 use std::fs::File;
 use std::io::{Write, BufReader, BufRead, Error};
-use serde::{Serialize, Deserialize};
+use serde_derive::Deserialize;
+use std::process::exit;
 use toml;
-
 
 const DEFAULT_CONFIG_FILE: &str = "src\\Config.toml";
 
@@ -23,36 +18,64 @@ struct Config {
     rinth: String,
 }
 
-fn create_default_config() -> std::io::Result<()> {
+#[derive(Deserialize)]
+struct Data {
+    config: Config,
+}
 
-    if let Some(proj_dirs) = ProjectDirs::from("com", "argo",  "obsidian") {
-        let OS: &str = consts::OS;
-        let USER: String = whoami::username();
-        println!("{}", OS);
-        println!("{}", USER);
+fn create_default_config(){
+    let config_file = &DEFAULT_CONFIG_FILE;
 
-        let linux = format!("/home/{}/.config/obsidian", USER);
-        let win = format!(r"C:\Users\{}\AppData\Roaming\argo\obsidian", USER);
-        let mac = format!("/Users/{}/Library/Application Support/com.argo.obsidian", USER);
+    let config = match fs::read_to_string(config_file) {
 
-        match OS {
-            linux => fs::create_dir("{}", linux),
-            windows => fs::create_dir("{}", win),
-            macos => fs::create_dir("{}", mac),
-            _ => println!("unsupported operating system? wtf"),
-        };
+        Ok(c) => c,
+        Err(_) => {
+            eprintln!("Could not read file `{}`", config_file);
+            exit(1);
+        }
+    };
+
+    let data: Data = match toml::from_str(&config) {
+        Ok(d) => d,
+        Err(_) => {
+            eprintln!("Unable to load data from `{}`", config);
+            exit(1);
+        }
+    };
 
 
+    let OS: &str = consts::OS;
+    let USER: String = whoami::username();
+
+    println!("hewwo from obsidian");
+    println!("{}", OS);
+    println!("{}", USER);
+    println!("\ninstance locations found:");
+    println!("{}", data.config.vanilla);
+    println!("{}", data.config.curse);
+    println!("{}", data.config.mmc);
+    println!("{}\n", data.config.rinth);
+
+
+    let linux = format!("/home/{}/.config/obsidian", USER);
+    let win = format!(r"C:\Users\{}\AppData\Roaming\argo\obsidian", USER);
+    let mac = format!("/Users/{}/Library/Application Support/com.argo.obsidian", USER);
+/*
+    match OS {
+        linux => fs::create_dir(linux),
+        windows => fs::create_dir(win),
+        macos => fs::create_dir(mac),
+    };
+*/
         //fs::create_dir(proj_dirs.config_dir())?;
         //let config_location:String = String::from("{}\\{}", proj_dirs.config_dir, DEFAULT_CONFIG_FILE);
         //fs::copy(DEFAULT_CONFIG_FILE, &config_location )?;
         // Linux:   /home/alice/.config/obsidian
         // Windows: C:\Users\Alice\AppData\Roaming\argo\obsidian
         // macOS:   /Users/Alice/Library/Application Support/com.argo.obsidian
-    }
-    Ok(())
-    
 }
+    
+
 
 fn main() {
     create_default_config();
