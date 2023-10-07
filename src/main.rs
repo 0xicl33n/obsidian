@@ -1,11 +1,12 @@
-//use whoami;
 use std::env::consts;
 use std::fs;
 use std::fs::File;
 use std::io::{Write, BufReader, BufRead, Error};
-use serde_derive::Deserialize;
+use std::path::Path;
 use std::process::exit;
+use serde_derive::Deserialize;
 use toml;
+
 
 const DEFAULT_CONFIG_FILE: &str = "src\\Config.toml";
 
@@ -24,10 +25,13 @@ struct Data {
 }
 
 fn create_default_config(){
+    
+    let OS: &str = consts::OS;
+    let USER: String = whoami::username();
+
     let config_file = &DEFAULT_CONFIG_FILE;
 
     let config = match fs::read_to_string(config_file) {
-
         Ok(c) => c,
         Err(_) => {
             eprintln!("Could not read file `{}`", config_file);
@@ -44,9 +48,6 @@ fn create_default_config(){
     };
 
 
-    let OS: &str = consts::OS;
-    let USER: String = whoami::username();
-
     println!("hewwo from obsidian");
     println!("{}", OS);
     println!("{}", USER);
@@ -56,33 +57,26 @@ fn create_default_config(){
     println!("{}", data.config.mmc);
     println!("{}\n", data.config.rinth);
 
+    let nixpath = format!("/home/{}/.config/obsidian", &USER);
+    let nix = Path::new(&nixpath);
+    let winpath = format!(r"C:\Users\{}\AppData\Roaming\argo\obsidian", &USER);
+    let win = Path::new(&winpath);
+    let macpath = format!("/Users/{}/Library/Application Support/com.argo.obsidian", &USER);
+    let mac = Path::new(&macpath);
 
-    let linux = format!("/home/{}/.config/obsidian", USER);
-    let win = format!(r"C:\Users\{}\AppData\Roaming\argo\obsidian", USER);
-    let mac = format!("/Users/{}/Library/Application Support/com.argo.obsidian", USER);
-/*
+
     match OS {
-        linux => fs::create_dir(linux),
-        windows => fs::create_dir(win),
-        macos => fs::create_dir(mac),
+        linux => fs::create_dir_all(nix),
+        windows => fs::create_dir_all(win),
+        macos => fs::create_dir_all(mac),
     };
-*/
-        //fs::create_dir(proj_dirs.config_dir())?;
-        //let config_location:String = String::from("{}\\{}", proj_dirs.config_dir, DEFAULT_CONFIG_FILE);
-        //fs::copy(DEFAULT_CONFIG_FILE, &config_location )?;
-        // Linux:   /home/alice/.config/obsidian
-        // Windows: C:\Users\Alice\AppData\Roaming\argo\obsidian
-        // macOS:   /Users/Alice/Library/Application Support/com.argo.obsidian
+
+
 }
     
 
 
 fn main() {
     create_default_config();
-    //let config: Config = {
-      //  let config_text = fs::read_to_string(&DEFAULT_CONFIG_FILE).expect("Error reading file");
-        //toml::from_str(&config_text).expect("Error reading stream")
-    //};
-    //println_f!("@DEBUG\nvanilla:\t{config.vanilla}\ncurse:\t{config.curse}\nmmc:\t{config.mmc}\n" );
 
 }
